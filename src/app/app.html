@@ -13,11 +13,44 @@
   </div>
   }
   @else {
-  <div>
-    <div>Title | Author | Pages</div>
-    @for (book of books(); track $index) {
-    <div>{{book.title}} | {{book.author}} | {{book.pages}}</div>
-    }
+  <div class="books-table-container">
+    <div class="books-table-title-bar">
+      <div>Total books: {{booksDataSource.length}}</div>
+      <div class="title-bar-group">
+        <input class="book-input" type="text" placeholder="Filter books by Title" (input)="filterBooks($event)"/>
+      </div>
+      <div>
+        <button class="book-btn">Actions</button>
+      </div>
+    </div>
+    <mat-table class="books-table" mat-table [dataSource]="booksDataSource">
+      <!-- Author Column -->
+      <ng-container matColumnDef="author">
+        <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
+        <mat-cell *matCellDef="let book"> {{book.author}} </mat-cell>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let book"> {{book.title}} </mat-cell>
+      </ng-container>
+
+      <!-- Pages Column -->
+      <ng-container matColumnDef="pages">
+        <mat-header-cell *matHeaderCellDef> Pages </mat-header-cell>
+        <mat-cell *matCellDef="let book"> {{book.pages}} </mat-cell>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let book"></mat-cell>
+      </ng-container>
+
+      <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </div>
   }
 </main>

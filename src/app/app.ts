@@ -1,22 +1,29 @@
-import { Component, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, Signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 
 import { BookService } from './services';
 import { Book } from './book.model';
 import { BookDialogComponent } from './components/book-dialog.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
-  imports: [MatDialogModule, CommonModule]
+  imports: [MatDialogModule, CommonModule, MatTableModule]
 })
 export class App {
+  public displayedColumns: Array<string>;
   public books: Signal<Book[]>;
-  constructor(private service: BookService, private dialog: MatDialog) {
+  public booksDataSource: Array<Book>;
+  private filterTimer: number | undefined;
+  constructor(private service: BookService, private dialog: MatDialog, private cdr: ChangeDetectorRef) {
     this.books = service.getBooks();
+    this.displayedColumns = ['title', 'author', 'pages', 'actions'];
+    this.booksDataSource = this.books();
+    this.filterTimer = undefined;
   }
 
   addBook() {
@@ -26,6 +33,7 @@ export class App {
       .subscribe((book: Book) => {
         if (this.service.validate(book)) {
           this.service.addBook(book);
+          this.booksDataSource = this.books();
         } else {
           alert('Book already exists!');
         }
@@ -39,6 +47,16 @@ export class App {
       return;
     }
     this.service.importXML(await file.text());
+    this.booksDataSource = this.books();
+  }
+
+  filterBooks(event: InputEvent): void {
+    clearTimeout(this.filterTimer);
+    this.filterTimer = setTimeout(() => {
+      const { value } = event.target as HTMLInputElement;
+      this.booksDataSource = this.books().filter((b: Book) => b.title.toLowerCase().includes(value.toLowerCase().trim()));
+      this.cdr.markForCheck();
+    }, 300);
   }
 
   exportBooks(): void {

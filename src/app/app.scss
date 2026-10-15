@@ -1,11 +1,12 @@
 .main-container {
-  height: 100%;
+  min-height: 100%;
   max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
   background-color: var(--secondary-color);
+  padding: 2rem;
 }
 
 .no-books-msg {
@@ -21,5 +22,35 @@
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+}
+
+.books-table-container {
+  width: 100%;
+
+  .books-table-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+  .title-bar-group {
+    flex-basis: 50%;
+  }
+
+  .books-table {
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.7);
+
+    .mat-column-title,
+    .mat-column-author {
+      flex: 0 0 40%;
+    }
+
+    .mat-column-pages,
+    .mat-column-actions {
+      flex: 0 0 10%;
+    }
   }
 }
