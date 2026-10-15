@@ -1,15 +1,18 @@
 <main class="main-container">
-  @if (!books.length) {
+  @if (!books().length) {
   <div class="no-books-msg">
     <div>You don't have any books yet.</div>
     <div class="no-books-msg-btn-group">
       <span>Please </span>
-      <button class="book-btn">+ Add book</button>
+      <button class="book-btn" (click)="addBook()">+ Add book</button>
       <span> or </span>
       <button class="book-btn" (click)="importInput.click()">+ Import books</button>
       <input hidden #importInput type="file" accept=".xml,application/xml,text/xml"
         (change)="onImportInputChange($event)" />
     </div>
   </div>
+  }
+  @else {
+  {{books() | json}}
   }
 </main>
