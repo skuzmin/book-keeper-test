@@ -1,12 +1,21 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { BookService } from './book.service';
+import { Book } from './book.model';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
+  providers: [BookService]
 })
 export class App {
-  protected readonly title = signal('book-keeper');
+  public books: Array<Book>;
+  constructor(service: BookService) {
+    this.books = service.getBooks();
+  }
+
+  onImportInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+  }
 }
