@@ -1,8 +1,8 @@
-import { Component, Signal, WritableSignal } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 
-import { BookService } from './book.service';
+import { BookService } from './services';
 import { Book } from './book.model';
 import { BookDialogComponent } from './components/book-dialog.component';
 import { CommonModule } from '@angular/common';
@@ -19,11 +19,6 @@ export class App {
     this.books = service.getBooks();
   }
 
-  onImportInputChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = Array.from(input.files ?? []);
-  }
-
   addBook() {
     this.dialog.open(BookDialogComponent)
       .afterClosed()
@@ -35,5 +30,25 @@ export class App {
           alert('Book already exists!');
         }
       });
+  }
+
+  async onImportInputChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+    this.service.importXML(await file.text());
+  }
+
+  exportBooks(): void {
+    const xml = this.service.exportXML();
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'books.xml';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 }

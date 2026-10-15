@@ -1,10 +1,20 @@
 import { Service, Signal, signal, WritableSignal } from '@angular/core';
-import { Book } from './book.model';
+import { XMLParser } from 'fast-xml-parser';
+import XMLBuilder from 'fast-xml-builder';
+
+import { Book } from '../book.model';
 
 @Service()
 export class BookService {
   private booksState: WritableSignal<Book[]> = signal([]);
   private readonly books: Signal<Book[]> = this.booksState.asReadonly();
+  private xmlParser: XMLParser = new XMLParser({
+    isArray: (tagName) => tagName === 'book',
+    parseTagValue: false,
+  });
+  private xmlBuilder = new XMLBuilder({
+    format: true,
+  });
 
   getBooks(): Signal<Book[]> {
     return this.books;
@@ -36,11 +46,23 @@ export class BookService {
     return !this.books().some((b: Book) => this.isBookTheSame(b, book));
   }
 
-  exportXML(): void {
-    return;
+  exportXML(): string {
+    const xml = this.xmlBuilder.build({
+      books: {
+        book: this.books().map((b: Book) => ({ title: b.title, author: b.author, pages: b.pages }))
+      }
+    });
+    return `<?xml version="1.0" encoding="UTF-8"?>\n${xml}`;
   }
 
-  importXML(): void {
-    return;
+  importXML(xml: string): void {
+    const data = this.xmlParser.parse(xml);
+    const items = data?.books?.book ?? [];
+    const importedBooks = items.map((item: any) => ({
+      title: String(item.title ?? '').trim(),
+      author: String(item.author ?? '').trim(),
+      pages: Number(item.pages)
+    }));
+    this.booksState.update(books => [...books, ...importedBooks])
   }
 }

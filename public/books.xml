@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+  <book><title>The Gunslinger</title><author>Stephen King</author><pages>224</pages></book>
+  <book><title>The Drawing of the Three</title><author>Stephen King</author><pages>400</pages></book>
+  <book><title>The Waste Lands</title><author>Stephen King</author><pages>422</pages></book>
+  <book><title>Wizard and Glass</title><author>Stephen King</author><pages>787</pages></book>
+  <book><title>Wolves of the Calla</title><author>Stephen King</author><pages>931</pages></book>
+  <book><title>Song of Susannah</title><author>Stephen King</author><pages>544</pages></book>
+  <book><title>The Dark Tower</title><author>Stephen King</author><pages>845</pages></book>
+  <book><title>The Shining</title><author>Stephen King</author><pages>447</pages></book>
+  <book><title>It</title><author>Stephen King</author><pages>1138</pages></book>
+  <book><title>Misery</title><author>Stephen King</author><pages>320</pages></book>
+  <book><title>The Stand</title><author>Stephen King</author><pages>1152</pages></book>
+  <book><title>Harry Potter and the Philosopher's Stone</title><author>J.K. Rowling</author><pages>223</pages></book>
+  <book><title>Harry Potter and the Chamber of Secrets</title><author>J.K. Rowling</author><pages>251</pages></book>
+  <book><title>Harry Potter and the Prisoner of Azkaban</title><author>J.K. Rowling</author><pages>317</pages></book>
+  <book><title>Harry Potter and the Goblet of Fire</title><author>J.K. Rowling</author><pages>636</pages></book>
+  <book><title>Harry Potter and the Order of the Phoenix</title><author>J.K. Rowling</author><pages>766</pages></book>
+  <book><title>The Hobbit</title><author>J.R.R. Tolkien</author><pages>310</pages></book>
+  <book><title>The Fellowship of the Ring</title><author>J.R.R. Tolkien</author><pages>423</pages></book>
+  <book><title>The Two Towers</title><author>J.R.R. Tolkien</author><pages>352</pages></book>
+  <book><title>The Return of the King</title><author>J.R.R. Tolkien</author><pages>416</pages></book>
+  <book><title>Dune</title><author>Frank Herbert</author><pages>412</pages></book>
+  <book><title>Dune Messiah</title><author>Frank Herbert</author><pages>256</pages></book>
+  <book><title>Children of Dune</title><author>Frank Herbert</author><pages>444</pages></book>
+  <book><title>Foundation</title><author>Isaac Asimov</author><pages>255</pages></book>
+  <book><title>Foundation and Empire</title><author>Isaac Asimov</author><pages>247</pages></book>
+  <book><title>Second Foundation</title><author>Isaac Asimov</author><pages>210</pages></book>
+  <book><title>I, Robot</title><author>Isaac Asimov</author><pages>253</pages></book>
+  <book><title>Guards! Guards!</title><author>Terry Pratchett</author><pages>355</pages></book>
+  <book><title>Mort</title><author>Terry Pratchett</author><pages>272</pages></book>
+  <book><title>Small Gods</title><author>Terry Pratchett</author><pages>384</pages></book>
+  <book><title>1984</title><author>George Orwell</author><pages>328</pages></book>
+  <book><title>Animal Farm</title><author>George Orwell</author><pages>112</pages></book>
+  <book><title>The Hitchhiker's Guide to the Galaxy</title><author>Douglas Adams</author><pages>216</pages></book>
+  <book><title>The Restaurant at the End of the Universe</title><author>Douglas Adams</author><pages>208</pages></book>
+  <book><title>Fahrenheit 451</title><author>Ray Bradbury</author><pages>194</pages></book>
+  <book><title>The Martian Chronicles</title><author>Ray Bradbury</author><pages>222</pages></book>
+  <book><title>Neuromancer</title><author>William Gibson</author><pages>271</pages></book>
+  <book><title>Count Zero</title><author>William Gibson</author><pages>256</pages></book>
+  <book><title>Mona Lisa Overdrive</title><author>William Gibson</author><pages>308</pages></book>
+</books>

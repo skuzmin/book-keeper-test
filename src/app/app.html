@@ -13,6 +13,11 @@
   </div>
   }
   @else {
-  {{books() | json}}
+  <div>
+    <div>Title | Author | Pages</div>
+    @for (book of books(); track $index) {
+    <div>{{book.title}} | {{book.author}} | {{book.pages}}</div>
+    }
+  </div>
   }
 </main>
