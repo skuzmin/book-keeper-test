@@ -1,29 +1,65 @@
 <main class="main-container">
+  <!-- IMPORT HIDDEN FIELD -->
+  <input hidden #importInput type="file" accept=".xml,application/xml,text/xml"
+    (change)="onImportInputChange($event)" />
+  <!-- NO BOOKS -->
   @if (!books().length) {
   <div class="no-books-msg">
     <div>You don't have any books yet.</div>
     <div class="no-books-msg-btn-group">
       <span>Please </span>
-      <button class="book-btn" (click)="addBook()">+ Add book</button>
+      <button class="book-btn" (click)="addBook()">
+        <mat-icon fontIcon="add"></mat-icon>
+        <span>Add Book</span>
+      </button>
       <span> or </span>
-      <button class="book-btn" (click)="importInput.click()">+ Import books</button>
-      <input hidden #importInput type="file" accept=".xml,application/xml,text/xml"
-        (change)="onImportInputChange($event)" />
+      <button class="book-btn" (click)="importInput.click()">
+        <mat-icon fontIcon="upload"></mat-icon>
+        <span>Import Books</span>
+      </button>
     </div>
   </div>
   }
+  <!-- TABLE -->
   @else {
   <div class="books-table-container">
     <div class="books-table-title-bar">
-      <div>Total books: {{booksDataSource.length}}</div>
-      <div class="title-bar-group">
-        <input class="book-input" type="text" placeholder="Filter books by Title" (input)="filterBooks($event)"/>
+      <div class="total-books">
+        <mat-icon fontIcon="book_2"></mat-icon>
+        <span class="text">Total books: {{booksDataSource.length}}</span>
       </div>
-      <div>
-        <button class="book-btn">Actions</button>
+      <div class="title-bar-filter">
+        <mat-icon class="title-bar-filter-icon" fontIcon="search"></mat-icon>
+        <input #filterInput class="book-input title-bar-filter-input" type="text" placeholder="Filter books by Title"
+          [(ngModel)]="filterText" (ngModelChange)="filterBooks()" />
+        @if(!!filterInput.value) {
+        <button class="title-bar-filter-btn" (click)="clearFilter()">
+          <mat-icon fontIcon="close"></mat-icon>
+        </button>
+        }
+      </div>
+      <div class="actions-btn-group">
+        <button class="main-btn" (click)="addBook()">
+          <mat-icon fontIcon="add"></mat-icon>
+          <span>Add Book</span>
+        </button>
+        <button class="actions-btn" [matMenuTriggerFor]="actionsMenu">
+          <mat-icon fontIcon="arrow_drop_down"></mat-icon>
+        </button>
+        <mat-menu class="books-table-menu" #actionsMenu="matMenu">
+          <button mat-menu-item (click)="exportBooks()">
+            <mat-icon fontIcon="download"></mat-icon>
+            <span>Export Books</span>
+          </button>
+          <button mat-menu-item (click)="importInput.click()">
+            <mat-icon fontIcon="upload"></mat-icon>
+            <span>Import Books</span>
+          </button>
+        </mat-menu>
       </div>
     </div>
-    <mat-table class="books-table" mat-table [dataSource]="booksDataSource">
+    <!-- Table -->
+    <mat-table class="books-table" [dataSource]="booksDataSource">
       <!-- Author Column -->
       <ng-container matColumnDef="author">
         <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
@@ -32,7 +68,7 @@
 
       <!-- Title Column -->
       <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
         <mat-cell *matCellDef="let book"> {{book.title}} </mat-cell>
       </ng-container>
 
@@ -44,12 +80,33 @@
 
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let book"></mat-cell>
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let book">
+          <button class="books-table-menu-btn" [matMenuTriggerFor]="menu">
+            <mat-icon fontIcon="more_vert"></mat-icon>
+          </button>
+          <mat-menu class="books-table-menu" #menu="matMenu">
+            <button mat-menu-item (click)="editBook(book)">
+              <mat-icon fontIcon="edit"></mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="removeBook(book)">
+              <mat-icon fontIcon="delete"></mat-icon>
+              <span>Remove</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <div class="mat-row no-data-row" *matNoDataRow>
+        <div class="mat-cell no-data-row-msg">
+          <mat-icon fontIcon="search_off"></mat-icon>
+          <span>No data matching the filter: "{{filterInput.value}}"</span>
+        </div>
+      </div>
     </mat-table>
   </div>
   }

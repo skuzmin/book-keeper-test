@@ -3,15 +3,15 @@
   <form class="book-dialog-form">
     <div class="form-group">
       <label class="form-label" for="title">Title:</label>
-      <input class="book-input" id="title" type="text" [(ngModel)]="book.title" name="title"/>
+      <input class="book-input" id="title" type="text" [(ngModel)]="book.title" name="title" />
     </div>
     <div class="form-group">
       <label class="form-label" for="author">Author:</label>
-      <input class="book-input" id="author" type="text" [(ngModel)]="book.author" name="author"/>
+      <input class="book-input" id="author" type="text" [(ngModel)]="book.author" name="author" />
     </div>
     <div class="form-group">
       <label class="form-label" for="pages">Pages:</label>
-      <input class="book-input" id="pages" type="number" [(ngModel)]="book.pages" name="pages"/>
+      <input class="book-input" id="pages" type="number" [(ngModel)]="book.pages" name="pages" />
     </div>
   </form>
   @if(isError) {
@@ -19,6 +19,11 @@
   }
   <div class="book-dialog-btn-group">
     <button class="book-btn danger-btn" mat-dialog-close>Cancel</button>
+    @if (isEditMode) {
+    <button class="book-btn" (click)="updateBook()">Update</button>
+    }
+    @else {
     <button class="book-btn" (click)="addBook()">Add</button>
+    }
   </div>
 </section>

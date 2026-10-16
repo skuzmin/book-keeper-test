@@ -25,6 +25,39 @@
   }
 }
 
+.actions-btn-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+
+  .main-btn,
+  .actions-btn {
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s linear;
+
+    &:hover {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+    }
+  }
+
+  .main-btn {
+    border-radius: 3px 0 0 3px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .actions-btn {
+    padding: 0.25rem 0;
+    border-radius: 0 3px 3px 0;
+    border-left: 1px solid var(--primary-color);
+  }
+}
+
 .books-table-container {
   width: 100%;
 
@@ -35,8 +68,56 @@
     padding: 1rem 0;
   }
 
-  .title-bar-group {
+  .total-books {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .text {
+      font-size: 1.25rem;
+    }
+  }
+
+  .title-bar-filter {
+    position: relative;
     flex-basis: 50%;
+
+    &-icon {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+      color: var(--primary-color);
+    }
+
+    &-input {
+      padding-left: 1.5rem;
+    }
+
+    &-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      display: flex;
+      border: none;
+      border-radius: 50%;
+      color: var(--primary-color);
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--secondary-color);
+        background-color: var(--primary-color);
+      }
+
+      .mat-icon {
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+      }
+    }
   }
 
   .books-table {
@@ -51,6 +132,37 @@
     .mat-column-pages,
     .mat-column-actions {
       flex: 0 0 10%;
+    }
+
+    &-menu-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      padding: 0.25rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+      }
+    }
+  }
+
+  .no-data-row {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 1rem;
+
+    &-msg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
     }
   }
 }

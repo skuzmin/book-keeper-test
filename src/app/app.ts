@@ -1,7 +1,10 @@
-import { ChangeDetectorRef, Component, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, Signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs';
 
 import { BookService } from './services';
@@ -12,18 +15,19 @@ import { BookDialogComponent } from './components/book-dialog.component';
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
-  imports: [MatDialogModule, CommonModule, MatTableModule]
+  imports: [MatDialogModule, CommonModule, MatTableModule, MatMenuModule, MatIconModule, FormsModule]
 })
 export class App {
   public displayedColumns: Array<string>;
   public books: Signal<Book[]>;
   public booksDataSource: Array<Book>;
-  private filterTimer: number | undefined;
+  public filterText: string;
   constructor(private service: BookService, private dialog: MatDialog, private cdr: ChangeDetectorRef) {
     this.books = service.getBooks();
-    this.displayedColumns = ['title', 'author', 'pages', 'actions'];
+    this.displayedColumns = ['author', 'title', 'pages', 'actions'];
     this.booksDataSource = this.books();
-    this.filterTimer = undefined;
+    effect(() => this.booksDataSource = this.books());
+    this.filterText = '';
   }
 
   addBook() {
@@ -33,11 +37,25 @@ export class App {
       .subscribe((book: Book) => {
         if (this.service.validate(book)) {
           this.service.addBook(book);
-          this.booksDataSource = this.books();
         } else {
           alert('Book already exists!');
         }
       });
+  }
+
+  editBook(book: Book): void {
+    this.dialog.open(BookDialogComponent, {
+      data: { book }
+    })
+      .afterClosed()
+      .pipe(filter(Boolean))
+      .subscribe((res: { old: Book, new: Book }) => {
+        this.service.updateBook(res.old, res.new);
+      });
+  }
+
+  removeBook(book: Book): void {
+    this.service.removeBook(book);
   }
 
   async onImportInputChange(event: Event): Promise<void> {
@@ -47,16 +65,16 @@ export class App {
       return;
     }
     this.service.importXML(await file.text());
-    this.booksDataSource = this.books();
   }
 
-  filterBooks(event: InputEvent): void {
-    clearTimeout(this.filterTimer);
-    this.filterTimer = setTimeout(() => {
-      const { value } = event.target as HTMLInputElement;
-      this.booksDataSource = this.books().filter((b: Book) => b.title.toLowerCase().includes(value.toLowerCase().trim()));
-      this.cdr.markForCheck();
-    }, 300);
+  filterBooks(): void {
+    this.booksDataSource = this.books().filter((b: Book) => b.title.toLowerCase().includes(this.filterText.toLowerCase().trim()));
+    this.cdr.markForCheck();
+  }
+
+  clearFilter(): void {
+    this.filterText = '';
+    this.filterBooks();
   }
 
   exportBooks(): void {

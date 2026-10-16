@@ -1,11 +1,13 @@
 .book-dialog {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 2rem;
   gap: 2rem;
+  background-color: var(--secondary-color);
 
   &-title {
     font-size: 1.5rem;
+    color: var(--primary-color);
   }
 
   &-form {
@@ -21,6 +23,8 @@
 
     .form-label {
       flex-basis: 35%;
+      color: var(--primary-color);
+      font-weight: 500;
     }
   }
 

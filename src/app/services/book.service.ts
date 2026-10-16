@@ -28,18 +28,18 @@ export class BookService {
     this.booksState.update(books => books.filter((b: Book) => !this.isBookTheSame(b, book)));
   }
 
-  updateBook(book: Book): void {
+  updateBook(oldBook: Book, newBook: Book): void {
     const books = this.books();
-    const index = books.findIndex((b: Book) => this.isBookTheSame(b, book));
+    const index = books.findIndex((b: Book) => this.isBookTheSame(b, oldBook));
     if (index !== -1) {
       const copy = [...books];
-      copy[index] = book;
+      copy[index] = newBook;
       this.booksState.set(copy);
     }
   }
 
   isBookTheSame(b1: Book, b2: Book): boolean {
-    return b1.author === b2.author && b1.pages === b2.pages && b1.title == b2.title;
+    return b1.author === b2.author && b1.pages === b2.pages && b1.title === b2.title;
   }
 
   validate(book: Book): boolean {
@@ -58,11 +58,29 @@ export class BookService {
   importXML(xml: string): void {
     const data = this.xmlParser.parse(xml);
     const items = data?.books?.book ?? [];
-    const importedBooks = items.map((item: any) => ({
-      title: String(item.title ?? '').trim(),
-      author: String(item.author ?? '').trim(),
-      pages: Number(item.pages)
-    }));
-    this.booksState.update(books => [...books, ...importedBooks])
+
+    this.booksState.update((books: Array<Book>) => {
+      const existedBooks = new Set(books.map((b: Book) => this.generateBookKey(b)));
+      const result = [...books];
+
+      for (const item of items) {
+        const newBook: Book = {
+          title: String(item.title ?? '').trim(),
+          author: String(item.author ?? '').trim(),
+          pages: Number(item.pages)
+        }
+        const key = this.generateBookKey(newBook);
+        if (!existedBooks.has(key)) {
+          existedBooks.add(key);
+          result.push(newBook);
+        }
+      }
+
+      return result;
+    });
+  }
+
+  generateBookKey(b: Book): string {
+    return JSON.stringify([b.author.toLowerCase().trim(), b.title.toLowerCase().trim(), b.pages]);
   }
 }
