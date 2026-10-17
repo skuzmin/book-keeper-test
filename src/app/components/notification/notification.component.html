@@ -1,0 +1,11 @@
+<div class="books-notification" [ngClass]="type">
+  <button class="btn-content" (click)="snackBarRef.dismiss()">
+    <mat-icon>{{icon}}</mat-icon>
+    <div class="text">
+      <div class="notification-title">{{title}}</div>
+      @if(mainText) {
+      <div class="notification-text">{{mainText}}</div>
+      }
+    </div>
+  </button>
+</div>

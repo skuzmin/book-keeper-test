@@ -4,6 +4,8 @@ import XMLBuilder from 'fast-xml-builder';
 
 import { Book } from '../book.model';
 
+type ImportStatus = 'success' | 'warning' | 'error';
+
 @Service()
 export class BookService {
   private booksState: WritableSignal<Book[]> = signal([]);
@@ -55,9 +57,14 @@ export class BookService {
     return `<?xml version="1.0" encoding="UTF-8"?>\n${xml}`;
   }
 
-  importXML(xml: string): void {
+  tryImportXML(xml: string): ImportStatus {
+    let status: ImportStatus = 'success';
     const data = this.xmlParser.parse(xml);
-    const items = data?.books?.book ?? [];
+    const items: Array<any> = data?.books?.book ?? [];
+
+    if (!items.length) {
+      return 'error';
+    }
 
     this.booksState.update((books: Array<Book>) => {
       const existedBooks = new Set(books.map((b: Book) => this.generateBookKey(b)));
@@ -73,11 +80,15 @@ export class BookService {
         if (!existedBooks.has(key)) {
           existedBooks.add(key);
           result.push(newBook);
+        } else {
+          status = 'warning';
         }
       }
 
       return result;
     });
+
+    return status;
   }
 
   generateBookKey(b: Book): string {

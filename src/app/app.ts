@@ -6,8 +6,9 @@ import { filter } from 'rxjs';
 
 import { BookService } from './services';
 import { Book, SortDirection, SortKey } from './book.model';
-import { BookDialogComponent } from './components/book-dialog.component';
+import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
 import { SORT_ORDER_ICONS } from './book.constant';
+import { NotificationService } from './components/notification/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class App {
   public booksDataSource: Array<Book>;
   public filterText: string;
   private sortKeys: Array<SortKey>;
-  constructor(private service: BookService, private dialog: MatDialog) {
+  constructor(private service: BookService, private dialog: MatDialog, private notification: NotificationService) {
     this.books = service.getBooks();
     this.dataColumns = ['author', 'title', 'pages'];
     this.displayedColumns = [...this.dataColumns, 'actions'];
@@ -39,8 +40,9 @@ export class App {
       .subscribe((book: Book) => {
         if (this.service.validate(book)) {
           this.service.addBook(book);
+          this.notification.success('Book has been successfully added.')
         } else {
-          alert('Book already exists!');
+          this.notification.error('Book already exists in the list.');
         }
       });
   }
@@ -53,20 +55,34 @@ export class App {
       .pipe(filter(Boolean))
       .subscribe((res: { old: Book, new: Book }) => {
         this.service.updateBook(res.old, res.new);
+        this.notification.success('Book has been successfully updated.')
       });
   }
 
   removeBook(book: Book): void {
     this.service.removeBook(book);
+    this.notification.success('Book has been removed from the list.')
   }
 
   async onImportInputChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
+
     if (!file) {
       return;
     }
-    this.service.importXML(await file.text());
+
+    const result = this.service.tryImportXML(await file.text());
+    switch (result) {
+      case 'error':
+        this.notification.error('Bad file format or data');
+        break;
+      case 'warning':
+        this.notification.warning('Imported partially, duplicates removed.');
+        break;
+      default:
+        this.notification.success('Books have been successfully imported.');
+    }
   }
 
   filterBooks(): void {
