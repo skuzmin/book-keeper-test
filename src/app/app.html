@@ -30,8 +30,12 @@
       </div>
       <div class="title-bar-filter">
         <mat-icon class="title-bar-filter-icon" fontIcon="search"></mat-icon>
-        <input #filterInput class="book-input title-bar-filter-input" type="text" placeholder="Filter books by Title"
-          [(ngModel)]="filterText" (ngModelChange)="filterBooks()" />
+        <input #filterInput 
+          class="book-input title-bar-filter-input" 
+          type="text" 
+          placeholder="Filter books by Title"
+          [(ngModel)]="filterText" 
+          (ngModelChange)="filterBooks()" />
         @if(!!filterInput.value) {
         <button class="title-bar-filter-btn" (click)="clearFilter()">
           <mat-icon fontIcon="close"></mat-icon>
@@ -60,23 +64,19 @@
     </div>
     <!-- Table -->
     <mat-table class="books-table" [dataSource]="booksDataSource">
-      <!-- Author Column -->
-      <ng-container matColumnDef="author">
-        <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
-        <mat-cell *matCellDef="let book"> {{book.author}} </mat-cell>
-      </ng-container>
 
-      <!-- Title Column -->
-      <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-        <mat-cell *matCellDef="let book"> {{book.title}} </mat-cell>
+      <!-- Data Columns -->
+      @for (col of dataColumns; track col) {
+      <ng-container [matColumnDef]="col">
+        <mat-header-cell *matHeaderCellDef>
+          <button class="table-header-btn" (click)="headerSort(col)">
+            <span>{{col | titlecase}}</span>
+            <mat-icon>{{getSortDirectionIcon(col)}}</mat-icon>
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let book"> {{book[col]}} </mat-cell>
       </ng-container>
-
-      <!-- Pages Column -->
-      <ng-container matColumnDef="pages">
-        <mat-header-cell *matHeaderCellDef> Pages </mat-header-cell>
-        <mat-cell *matCellDef="let book"> {{book.pages}} </mat-cell>
-      </ng-container>
+      }
 
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
