@@ -21,13 +21,10 @@ describe('BookDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { book } },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BookDialogComponent);
     component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   describe('General', () => {

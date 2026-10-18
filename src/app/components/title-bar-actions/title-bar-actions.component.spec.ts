@@ -13,13 +13,10 @@ describe('TitleBarActionsComponent', () => {
 
       ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(TitleBarActionsComponent);
     component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   describe('General', () => {

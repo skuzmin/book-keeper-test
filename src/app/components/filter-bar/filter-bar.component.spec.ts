@@ -14,14 +14,12 @@ describe('FilterBarComponent', () => {
         FormsModule,
       ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(FilterBarComponent);
     component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
+
 
   describe('General', () => {
     it('should create the component', () => {

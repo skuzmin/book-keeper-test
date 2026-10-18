@@ -19,13 +19,11 @@ describe('NotificationComponent', () => {
         { provide: MatSnackBarRef, useValue: { dismiss: () => { } } },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(NotificationComponent);
     component = fixture.componentInstance;
 
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   describe('General', () => {

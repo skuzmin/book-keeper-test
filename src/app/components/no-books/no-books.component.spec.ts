@@ -13,13 +13,10 @@ describe('NoBooksComponent', () => {
 
       ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(NoBooksComponent);
     component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   describe('General', () => {

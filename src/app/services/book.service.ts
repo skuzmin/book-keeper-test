@@ -18,6 +18,8 @@ export class BookService {
     format: true,
   });
 
+
+  //#region CRUD
   getBooks(): Signal<Book[]> {
     return this.books;
   }
@@ -39,7 +41,9 @@ export class BookService {
       this.booksState.set(copy);
     }
   }
+  //#endregion CRUD
 
+  //#region Helpers
   isBookTheSame(b1: Book, b2: Book): boolean {
     return b1.author === b2.author && b1.pages === b2.pages && b1.title === b2.title;
   }
@@ -48,6 +52,12 @@ export class BookService {
     return !this.books().some((b: Book) => this.isBookTheSame(b, book));
   }
 
+  generateBookKey(b: Book): string {
+    return JSON.stringify([b.author.toLowerCase().trim(), b.title.toLowerCase().trim(), b.pages]);
+  }
+  //#endregion Helpers
+
+  //#region Import/Export
   exportXML(): string {
     const xml = this.xmlBuilder.build({
       books: {
@@ -90,8 +100,5 @@ export class BookService {
 
     return status;
   }
-
-  generateBookKey(b: Book): string {
-    return JSON.stringify([b.author.toLowerCase().trim(), b.title.toLowerCase().trim(), b.pages]);
-  }
+  //#endregion Import/Export
 }

@@ -34,6 +34,7 @@ export class App {
     effect(() => this.updateView());
   }
 
+  //#region General
   addBook() {
     this.dialog.open(BookDialogComponent)
       .afterClosed()
@@ -70,53 +71,6 @@ export class App {
     this.notification.success('Book has been removed from the list.')
   }
 
-  async onImportInputChange(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    const result = this.service.tryImportXML(await file.text());
-    switch (result) {
-      case 'error':
-        this.notification.error('Bad file format or data.');
-        break;
-      case 'warning':
-        this.notification.warning('Imported partially, duplicates removed.');
-        break;
-      default:
-        this.notification.success('Books have been successfully imported.');
-    }
-  }
-
-  filterBooks(event: string): void {
-    this.filterText = event;
-    this.updateView();
-  }
-
-  headerSort(field: keyof Book): void {
-    const existingSortIndex = this.sortKeys.findIndex((sk: SortKey) => sk.field === field);
-
-    if (existingSortIndex !== -1) {
-      if (this.sortKeys[existingSortIndex].dir === 'asc') {
-        this.sortKeys[existingSortIndex].dir = 'desc';
-      } else {
-        this.sortKeys.splice(existingSortIndex, 1);
-      }
-    } else {
-      if (field === 'author') {
-        this.sortKeys = [{ field, dir: 'asc' }];
-      } else {
-        this.sortKeys = this.sortKeys.filter(k => k.field === 'author');
-        this.sortKeys.push({ field, dir: 'asc' });
-      }
-    }
-
-    this.updateView();
-  }
-
   updateView(): void {
     const text = this.filterText.toLowerCase().trim();
     const rows = this.books().filter(b => b.title.toLowerCase().includes(text));
@@ -144,6 +98,34 @@ export class App {
 
     this.booksDataSource = rows;
   }
+  //#endregion
+
+  //#region Sorting/Filtering
+  filterBooks(event: string): void {
+    this.filterText = event;
+    this.updateView();
+  }
+
+  headerSort(field: keyof Book): void {
+    const existingSortIndex = this.sortKeys.findIndex((sk: SortKey) => sk.field === field);
+
+    if (existingSortIndex !== -1) {
+      if (this.sortKeys[existingSortIndex].dir === 'asc') {
+        this.sortKeys[existingSortIndex].dir = 'desc';
+      } else {
+        this.sortKeys.splice(existingSortIndex, 1);
+      }
+    } else {
+      if (field === 'author') {
+        this.sortKeys = [{ field, dir: 'asc' }];
+      } else {
+        this.sortKeys = this.sortKeys.filter(k => k.field === 'author');
+        this.sortKeys.push({ field, dir: 'asc' });
+      }
+    }
+
+    this.updateView();
+  }
 
   getSortDirection(col: keyof Book): SortDirection | null {
     const sortKey = this.sortKeys.find((sk: SortKey) => sk.field === col);
@@ -153,6 +135,29 @@ export class App {
   getSortDirectionIcon(col: keyof Book): string {
     const dir = this.getSortDirection(col);
     return dir ? SORT_ORDER_ICONS[dir] : '';
+  }
+  //#endregion Sorting/Filtering
+
+  //#region Import/Export
+  async onImportInputChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const result = this.service.tryImportXML(await file.text());
+    switch (result) {
+      case 'error':
+        this.notification.error('Bad file format or data.');
+        break;
+      case 'warning':
+        this.notification.warning('Imported partially, duplicates removed.');
+        break;
+      default:
+        this.notification.success('Books have been successfully imported.');
+    }
   }
 
   exportBooks(): void {
@@ -165,4 +170,5 @@ export class App {
     a.click();
     URL.revokeObjectURL(url);
   }
+  //#endregion Import/Export
 }

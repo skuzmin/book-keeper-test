@@ -18,7 +18,7 @@ describe('BookService', () => {
       expect(service).toBeTruthy();
     });
 
-    it('should add book', () => {
+    it('should add the book', () => {
       service.addBook(NEW_TEST_BOOK);
       expect(service.getBooks()().length).toEqual(2);
     });
