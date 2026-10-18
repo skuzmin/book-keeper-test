@@ -4,21 +4,7 @@
     (change)="onImportInputChange($event)" />
   <!-- NO BOOKS -->
   @if (!books().length) {
-  <div class="no-books-msg">
-    <div>You don't have any books yet.</div>
-    <div class="no-books-msg-btn-group">
-      <span>Please </span>
-      <button class="book-btn" (click)="addBook()">
-        <mat-icon fontIcon="add"></mat-icon>
-        <span>Add Book</span>
-      </button>
-      <span> or </span>
-      <button class="book-btn" (click)="importInput.click()">
-        <mat-icon fontIcon="upload"></mat-icon>
-        <span>Import Books</span>
-      </button>
-    </div>
-  </div>
+  <app-no-books (addClick)="addBook()" (importClick)="importInput.click()"></app-no-books>
   }
   <!-- TABLE -->
   @else {
@@ -28,39 +14,9 @@
         <mat-icon fontIcon="book_2"></mat-icon>
         <span class="text">Total books: {{booksDataSource.length}}</span>
       </div>
-      <div class="title-bar-filter">
-        <mat-icon class="title-bar-filter-icon" fontIcon="search"></mat-icon>
-        <input #filterInput 
-          class="book-input title-bar-filter-input" 
-          type="text" 
-          placeholder="Filter books by Title"
-          [(ngModel)]="filterText" 
-          (ngModelChange)="filterBooks()" />
-        @if(!!filterInput.value) {
-        <button class="title-bar-filter-btn" (click)="clearFilter()">
-          <mat-icon fontIcon="close"></mat-icon>
-        </button>
-        }
-      </div>
-      <div class="actions-btn-group">
-        <button class="main-btn" (click)="addBook()">
-          <mat-icon fontIcon="add"></mat-icon>
-          <span>Add Book</span>
-        </button>
-        <button class="actions-btn" [matMenuTriggerFor]="actionsMenu">
-          <mat-icon fontIcon="arrow_drop_down"></mat-icon>
-        </button>
-        <mat-menu class="books-table-menu" #actionsMenu="matMenu">
-          <button mat-menu-item (click)="exportBooks()">
-            <mat-icon fontIcon="download"></mat-icon>
-            <span>Export Books</span>
-          </button>
-          <button mat-menu-item (click)="importInput.click()">
-            <mat-icon fontIcon="upload"></mat-icon>
-            <span>Import Books</span>
-          </button>
-        </mat-menu>
-      </div>
+      <app-filter-bar class="filter-bar" (filterTextChange)="filterBooks($event)"></app-filter-bar>
+      <app-title-bar-actions (addClick)="addBook()" (exportClick)="exportBooks()"
+        (importClick)="importInput.click()"></app-title-bar-actions>
     </div>
     <!-- Table -->
     <mat-table class="books-table" [dataSource]="booksDataSource">
@@ -104,7 +60,7 @@
       <div class="mat-row no-data-row" *matNoDataRow>
         <div class="mat-cell no-data-row-msg">
           <mat-icon fontIcon="search_off"></mat-icon>
-          <span>No data matching the filter: "{{filterInput.value}}"</span>
+          <span>No data matching the filter: "{{filterText}}"</span>
         </div>
       </div>
     </mat-table>

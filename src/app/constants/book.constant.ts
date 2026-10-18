@@ -1,4 +1,4 @@
-import { SortDirection } from './book.model';
+import { SortDirection } from '../models/book.model';
 
 export const SORT_ORDER_ICONS: Record<SortDirection, string> = {
   asc: 'arrow_upward',

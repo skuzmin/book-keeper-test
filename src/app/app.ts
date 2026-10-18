@@ -1,20 +1,21 @@
-import { ANGULAR_IMPORTS } from './shared/common.imports';
-import { MATERIAL_IMPORTS } from './shared/material.imports';
+import { ANGULAR_IMPORTS } from './imports/common.imports';
+import { MATERIAL_IMPORTS } from './imports/material.imports';
 import { Component, effect, Signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 
-import { BookService } from './services';
-import { Book, SortDirection, SortKey } from './book.model';
+import { BOOK_IMPORTS } from './imports/book.imports';
+import { BookService } from './services/book.service';
+import { Book, SortDirection, SortKey } from './models/book.model';
 import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
-import { SORT_ORDER_ICONS } from './book.constant';
+import { SORT_ORDER_ICONS } from './constants/book.constant';
 import { NotificationService } from './components/notification/notification.service';
 
 @Component({
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
-  imports: [ANGULAR_IMPORTS, MATERIAL_IMPORTS]
+  imports: [ANGULAR_IMPORTS, MATERIAL_IMPORTS, BOOK_IMPORTS]
 })
 export class App {
   public displayedColumns: Array<string>;
@@ -85,13 +86,9 @@ export class App {
     }
   }
 
-  filterBooks(): void {
+  filterBooks(event: string): void {
+    this.filterText = event;
     this.updateView();
-  }
-
-  clearFilter(): void {
-    this.filterText = '';
-    this.filterBooks();
   }
 
   headerSort(field: keyof Book): void {

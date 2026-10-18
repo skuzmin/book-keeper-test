@@ -2,7 +2,7 @@ import { Service, Signal, signal, WritableSignal } from '@angular/core';
 import { XMLParser } from 'fast-xml-parser';
 import XMLBuilder from 'fast-xml-builder';
 
-import { Book } from '../book.model';
+import { Book } from '../models/book.model';
 
 type ImportStatus = 'success' | 'warning' | 'error';
 

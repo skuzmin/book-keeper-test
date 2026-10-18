@@ -1,0 +1,15 @@
+.no-books {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--primary-color);
+
+  &-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

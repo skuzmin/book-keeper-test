@@ -1,0 +1,32 @@
+.actions-btn-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+
+  .main-btn,
+  .actions-btn {
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s linear;
+
+    &:hover {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+    }
+  }
+
+  .main-btn {
+    border-radius: 3px 0 0 3px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .actions-btn {
+    padding: 0.25rem 0;
+    border-radius: 0 3px 3px 0;
+    border-left: 1px solid var(--primary-color);
+  }
+}

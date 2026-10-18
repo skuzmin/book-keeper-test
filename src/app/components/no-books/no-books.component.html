@@ -1,0 +1,15 @@
+<div class="no-books">
+  <div>You don't have any books yet.</div>
+  <div class="no-books-btn-group">
+    <span>Please </span>
+    <button class="book-btn" (click)="addClick.emit()">
+      <mat-icon fontIcon="add"></mat-icon>
+      <span>Add Book</span>
+    </button>
+    <span> or </span>
+    <button class="book-btn" (click)="importClick.emit()">
+      <mat-icon fontIcon="upload"></mat-icon>
+      <span>Import Books</span>
+    </button>
+  </div>
+</div>

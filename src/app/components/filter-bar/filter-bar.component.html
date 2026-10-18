@@ -1,0 +1,10 @@
+<div class="title-bar-filter">
+  <mat-icon class="title-bar-filter-icon" fontIcon="search"></mat-icon>
+  <input #filterInput class="book-input title-bar-filter-input" type="text" placeholder="Filter books by Title"
+    [(ngModel)]="filterText" (ngModelChange)="filterTextChange.emit(filterText)" />
+  @if(!!filterInput.value) {
+  <button class="title-bar-filter-btn" (click)="clearFilter()">
+    <mat-icon fontIcon="close"></mat-icon>
+  </button>
+  }
+</div>

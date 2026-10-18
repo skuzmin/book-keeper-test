@@ -1,0 +1,19 @@
+<div class="actions-btn-group">
+  <button class="main-btn" (click)="addClick.emit()">
+    <mat-icon fontIcon="add"></mat-icon>
+    <span>Add Book</span>
+  </button>
+  <button class="actions-btn" [matMenuTriggerFor]="actionsMenu">
+    <mat-icon fontIcon="arrow_drop_down"></mat-icon>
+  </button>
+  <mat-menu class="books-table-menu" #actionsMenu="matMenu">
+    <button mat-menu-item (click)="exportClick.emit()">
+      <mat-icon fontIcon="download"></mat-icon>
+      <span>Export Books</span>
+    </button>
+    <button mat-menu-item (click)="importClick.emit()">
+      <mat-icon fontIcon="upload"></mat-icon>
+      <span>Import Books</span>
+    </button>
+  </mat-menu>
+</div>

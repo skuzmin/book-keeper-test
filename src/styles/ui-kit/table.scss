@@ -1,0 +1,21 @@
+.books-table-menu {
+  .mat-mdc-menu-content {
+    background-color: var(--background-default-color);
+    padding: 0;
+
+    .mat-mdc-menu-item {
+      min-height: auto;
+      color: var(--primary-color);
+      padding: 0.5rem 0.75rem;
+
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+      }
+
+      .mat-mdc-menu-item-text {
+        font-weight: 500;
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+.title-bar-filter {
+  position: relative;
+
+  &-icon {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    color: var(--primary-color);
+  }
+
+  &-input {
+    padding-left: 1.5rem;
+  }
+
+  &-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    border: none;
+    border-radius: 50%;
+    color: var(--primary-color);
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--secondary-color);
+      background-color: var(--primary-color);
+    }
+
+    .mat-icon {
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
