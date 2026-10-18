@@ -28,7 +28,7 @@ export class BookDialogComponent {
   }
 
   validation(book: Book): boolean {
-    return !!book.author.trim() && !!book.title.trim() && !!book.pages;
+    return !!book.author.trim() && !!book.title.trim() && !!book.pages && book.pages > 0;
   }
 
   addBook(): void {

@@ -87,6 +87,10 @@ export class BookService {
           pages: Number(item.pages)
         }
         const key = this.generateBookKey(newBook);
+        if (isNaN(newBook.pages)) {
+          status = 'error';
+          return result;
+        }
         if (!existedBooks.has(key)) {
           existedBooks.add(key);
           result.push(newBook);

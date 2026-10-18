@@ -56,8 +56,22 @@ describe('BookService', () => {
   });
 
   describe('Bood Import', () => {
-    it('should return status: ERROR', () => {
+    it('should return status: ERROR (bad file)', () => {
       const result = service.tryImportXML('TEST');
+      expect(result).toBe('error');
+    });
+
+    it('should return status: ERROR (bad data)', () => {
+      const xmlData = `<?xml version="1.0" encoding="UTF-8"?>
+                      <books>
+                        <book>
+                          <title>test777</title>
+                          <author>test777</author>
+                          <pages>aaa</pages>
+                        </book>
+                      </books>
+                      `;
+      const result = service.tryImportXML(xmlData);
       expect(result).toBe('error');
     });
 
