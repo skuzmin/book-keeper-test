@@ -3,9 +3,9 @@
 ## How To:
 
 To run the test task you have a couple of options.
-- `make  start`
-- `docker compose up`
-- `npm i && npm start`
+- `make  start`        - http://localhost:8080/
+- `docker compose up`  - http://localhost:8080/
+- `npm i && npm start` - http://localhost:4200/
 
 Other commans you can find in `Makefile` or `package.json`
 
