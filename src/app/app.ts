@@ -6,10 +6,10 @@ import { filter } from 'rxjs';
 
 import { BOOK_IMPORTS } from './imports/book.imports';
 import { BookService } from './services/book.service';
-import { Book, SortDirection, SortKey } from './models/book.model';
-import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
-import { SORT_ORDER_ICONS } from './constants/book.constant';
 import { NotificationService } from './components/notification/notification.service';
+import { Book, SortDirection, SortKey } from './models/book.model';
+import { SORT_ORDER_ICONS } from './constants/book.constant';
+import { BookDialogComponent } from './components/book-dialog/book-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -30,8 +30,8 @@ export class App {
     this.displayedColumns = [...this.dataColumns, 'actions'];
     this.sortKeys = [];
     this.booksDataSource = [];
-    effect(() => this.updateView());
     this.filterText = '';
+    effect(() => this.updateView());
   }
 
   addBook() {
@@ -55,8 +55,13 @@ export class App {
       .afterClosed()
       .pipe(filter(Boolean))
       .subscribe((res: { old: Book, new: Book }) => {
-        this.service.updateBook(res.old, res.new);
-        this.notification.success('Book has been successfully updated.')
+        const result = this.service.validate(res.new);
+        if (result) {
+          this.service.updateBook(res.old, res.new);
+          this.notification.success('Book has been successfully updated.');
+        } else {
+          this.notification.error('This book already exists.');
+        }
       });
   }
 
@@ -76,7 +81,7 @@ export class App {
     const result = this.service.tryImportXML(await file.text());
     switch (result) {
       case 'error':
-        this.notification.error('Bad file format or data');
+        this.notification.error('Bad file format or data.');
         break;
       case 'warning':
         this.notification.warning('Imported partially, duplicates removed.');
